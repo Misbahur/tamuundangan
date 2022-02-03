@@ -6,6 +6,8 @@ use App\Models\tamu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use DB;
+use DataTables;
+use PDF;
 
 class TamuController extends Controller
 {
@@ -115,6 +117,37 @@ class TamuController extends Controller
     public function update(Request $request, tamu $tamu)
     {
         //
+    }
+
+    public function lengkap(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = tamu::select('*');
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+     
+                           $btn = '<a href="javascript:void(0)" class="disabled edit btn btn-primary btn-sm">?</a>';
+    
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+        
+        return view('lengkap');
+    }
+
+    public function hadir()
+    {
+        $tamu = tamu::where('hadir', 1)->get();
+        // dd($tamu);
+        $data = 'Daftar Tamu Yang Hadir Osingdev.com';
+          
+        $pdf = PDF::loadView('pdf', ['data' => $data, 'tamu' => $tamu]);
+    
+        return $pdf->stream();
+
     }
 
     public function report()

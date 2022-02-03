@@ -26,6 +26,12 @@ Route::get('tamu/cari', [TamuController::class, 'search'])->name('cari');
 Route::post('tambahtamu', [TamuController::class, 'store'])->name('tambahtamu');
 
 Route::get('report', [TamuController::class, 'report'])->name('report');
+Route::get('lengkap', [TamuController::class, 'lengkap'])->name('lengkap');
+Route::get('pdfhadir', [TamuController::class, 'hadir'])->name('pdf');
+
+Route::get('pns', function () {
+    return view('pns');
+});
 
 
 Auth::routes();
